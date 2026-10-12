@@ -1,0 +1,20 @@
+   name: attendance
+   on:
+     workflow_dispatch:
+   jobs:
+     run:
+       runs-on: ubuntu-latest
+       timeout-minutes: 210
+       steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-python@v5
+           with:
+             python-version: "3.12"
+         - run: pip install playwright python-dotenv requests && playwright install --with-deps chromium
+         - run: python attendance.py
+           env:
+             HEADLESS: "1"
+             WSP_LOGIN: ${{ secrets.WSP_LOGIN }}
+             WSP_PASSWORD: ${{ secrets.WSP_PASSWORD }}
+             TG_TOKEN: ${{ secrets.TG_TOKEN }}
+             TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
